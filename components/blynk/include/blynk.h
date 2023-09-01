@@ -152,6 +152,10 @@ struct _blynk_state_evt_t {
 	} disconnected;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef void (*blynk_state_handler_t)(blynk_client_t *c, const blynk_state_evt_t*, void*);
 typedef void (*blynk_response_handler_t)(blynk_client_t*, uint16_t, void*);
 typedef void (*blynk_handler_t)(blynk_client_t*, uint16_t, const char*, int, char**, void*);
@@ -235,5 +239,9 @@ blynk_err_t blynk_send_with_callback(blynk_client_t *c,
 
 blynk_err_t blynk_send(blynk_client_t *c, uint8_t cmd, TickType_t wait, const char *fmt, ...);
 blynk_err_t blynk_send_response(blynk_client_t *c, uint16_t id, uint16_t status, TickType_t wait);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

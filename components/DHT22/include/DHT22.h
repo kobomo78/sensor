@@ -11,11 +11,20 @@
 
 // == function prototypes =======================================
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 void 	setDHTgpio(int gpio);
 void 	errorHandler(int response);
 int 	readDHT();
 float 	getHumidity();
 float 	getTemperature();
 int 	getSignalLevel( int usTimeOut, bool state );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

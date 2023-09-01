@@ -10,6 +10,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
+#include "esp_https_ota.h"
+#include "esp_ota_ops.h"
 #include "esp_system.h"
 #include "esp_event.h"
 #include "esp_log.h"
@@ -21,11 +23,12 @@
 
 #include "wifi.h"
 #include "DHT22.h"
+#include "ota.h"
 #include "blynk_management.h"
 
 
 
-
+extern "C" {void app_main(void);}
 
 static const char *TAG = "sensor";
 
@@ -33,6 +36,7 @@ uint32_t   counter=0;
 float Temperature=0;
 float Humidity=0;
 
+COtaUpdate  OtaUpdate;
 
 void Work_counter(void *pvParameter)
 {
@@ -73,6 +77,7 @@ void DHT_reader_task(void *pvParameter)
 
 void app_main(void)
 {
+
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -81,14 +86,25 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
+    const esp_partition_t *running = esp_ota_get_running_partition();
+    esp_app_desc_t running_app_info;
+    if (esp_ota_get_partition_description(running, &running_app_info) == ESP_OK) {
+        ESP_LOGI(TAG, "Running firmware version: %s", running_app_info.version);
+    }
+
 
     xTaskCreate(&DHT_reader_task, "DHT_reader_task", 2048, NULL, 5, NULL );
     xTaskCreate(&Work_counter, "Work_counter", 2048, NULL, 5, NULL );
 
-    ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
+
 
 
     WifiInit();
     BlynkInit();
+
+    OtaUpdate.Init();
+
+    esp_ota_mark_app_valid_cancel_rollback();
+
 
 }
