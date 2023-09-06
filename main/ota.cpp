@@ -9,7 +9,6 @@
 static const char *TAG = "ota";
 
 extern const uint8_t server_cert_pem_start[] asm("_binary_ca_cert_pem_start");
-extern const uint8_t server_cert_pem_end[] asm("_binary_ca_cert_pem_end");
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
@@ -94,6 +93,7 @@ void  COtaUpdate::update(void)
         memset(&config,0,sizeof(config));
 
         config.url=OTA_HOME_SERVER_URL;
+        config.port=34002;
         config.cert_pem = (char *)server_cert_pem_start;
 
         config.event_handler = _http_event_handler;

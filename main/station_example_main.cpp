@@ -86,11 +86,6 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
-    const esp_partition_t *running = esp_ota_get_running_partition();
-    esp_app_desc_t running_app_info;
-    if (esp_ota_get_partition_description(running, &running_app_info) == ESP_OK) {
-        ESP_LOGI(TAG, "Running firmware version: %s", running_app_info.version);
-    }
 
 
     xTaskCreate(&DHT_reader_task, "DHT_reader_task", 2048, NULL, 5, NULL );
