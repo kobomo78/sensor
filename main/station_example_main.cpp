@@ -16,6 +16,7 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include "esp_netif.h"
 
 #include "lwip/err.h"
 #include "lwip/sys.h"
@@ -25,6 +26,7 @@
 #include "DHT22.h"
 #include "ota.h"
 #include "blynk_management.h"
+#include "Server_Exchange.h"
 
 
 
@@ -87,10 +89,13 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
+    ESP_ERROR_CHECK(esp_netif_init());
+
 
 
     xTaskCreate(&DHT_reader_task, "DHT_reader_task", 2048, NULL, 5, NULL );
     xTaskCreate(&Work_counter, "Work_counter", 2048, NULL, 5, NULL );
+    xTaskCreate(&Socket_Recv, "Socket_Recv", 4096, NULL, 5, NULL );
 
 
 
