@@ -10,12 +10,13 @@ enum {
 	VP_COUNTER = 0,
 	VP_TEMPERATURE,
 	VP_HUMIDITY,
+	VP_VERSION,
 };
 
 extern uint32_t   counter;
 extern float Temperature;
 extern float Humidity;
-
+extern char  Ver[16];
 
 /* Blynk client state handler */
 void state_handler(blynk_client_t *c, const blynk_state_evt_t *ev, void *data) {
@@ -72,6 +73,11 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 		case VP_COUNTER:
 		{
 			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sii", "vw", VP_COUNTER, counter);
+			break;
+		}
+		case VP_VERSION:
+		{
+			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sis", "vw", VP_VERSION, Ver);
 			break;
 		}
 

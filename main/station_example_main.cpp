@@ -35,6 +35,7 @@ static const char *TAG = "sensor";
 uint32_t   counter=0;
 float Temperature=0;
 float Humidity=0;
+char  Ver[16];
 
 COtaUpdate  OtaUpdate;
 
