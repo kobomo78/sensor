@@ -17,6 +17,7 @@
 
 extern float Temperature;
 extern float Humidity;
+extern uint8_t   addr;
 
 #define HOST_IP_ADDR "109.194.141.27"
 #define PORT		 34004
@@ -82,7 +83,7 @@ void Socket_Recv(void *pvParameter)
 
 	                	SSensorData data;
 	                	data.type=TYPE_DATA;
-	                	data.sensor_addr=0;
+	                	data.sensor_addr=addr;
 	                	data.temperature=Temperature;
 	                	data.humidity=Humidity;
 
@@ -91,7 +92,7 @@ void Socket_Recv(void *pvParameter)
 		                    ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
 		                    break;
 
-	                }
+		                			}
 
 	                /*
 	                rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string...

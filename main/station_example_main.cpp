@@ -29,6 +29,14 @@
 #include "Server_Exchange.h"
 
 
+#define GPIO_OUTPUT_IO_0    GPIO_NUM_13
+#define GPIO_OUTPUT_IO_1    GPIO_NUM_12
+#define GPIO_OUTPUT_IO_2    GPIO_NUM_14
+#define GPIO_OUTPUT_IO_3    GPIO_NUM_26
+#define GPIO_OUTPUT_IO_4    GPIO_NUM_25
+
+
+#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<GPIO_OUTPUT_IO_0) | (1ULL<<GPIO_OUTPUT_IO_1) | (1ULL<<GPIO_OUTPUT_IO_2) | (1ULL<<GPIO_OUTPUT_IO_3) | (1ULL<<GPIO_OUTPUT_IO_4))
 
 extern "C" {void app_main(void);}
 
@@ -38,6 +46,7 @@ uint32_t   counter=0;
 float Temperature=0;
 float Humidity=0;
 char  Ver[16];
+uint8_t   addr=0xFF;
 
 COtaUpdate  OtaUpdate;
 
@@ -76,7 +85,34 @@ void DHT_reader_task(void *pvParameter)
 }
 
 
+void Init(void)
+{
+	   gpio_config_t io_conf;
+	   memset((void*)&io_conf,0,sizeof(io_conf));
 
+	   io_conf.mode = GPIO_MODE_INPUT;
+	   io_conf.pin_bit_mask = GPIO_OUTPUT_PIN_SEL;
+	   io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+	   io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+
+
+	   gpio_config(&io_conf);
+
+
+	   if (gpio_get_level(GPIO_OUTPUT_IO_0)==0)
+		   addr=0;
+	   if (gpio_get_level(GPIO_OUTPUT_IO_1)==0)
+		   addr=1;
+	   if (gpio_get_level(GPIO_OUTPUT_IO_2)==0)
+		   addr=2;
+	   if (gpio_get_level(GPIO_OUTPUT_IO_3)==0)
+		   addr=3;
+	   if (gpio_get_level(GPIO_OUTPUT_IO_4)==0)
+		   addr=4;
+
+	   ESP_LOGI(TAG,"addr=%d",addr);
+
+}
 
 void app_main(void)
 {
@@ -99,7 +135,7 @@ void app_main(void)
 
 
 
-
+    Init();
     WifiInit();
     BlynkInit();
 
