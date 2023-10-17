@@ -17,6 +17,7 @@ extern uint32_t   counter;
 extern float Temperature;
 extern float Humidity;
 extern char  Ver[16];
+extern uint8_t   addr;
 
 /* Blynk client state handler */
 void state_handler(blynk_client_t *c, const blynk_state_evt_t *ev, void *data) {
@@ -79,14 +80,20 @@ void BlynkInit(void)
 {
 
 	blynk_client_t *client = malloc(sizeof(blynk_client_t));
+	char tokens[5][64]={BLYNK_TOKEN_1,BLYNK_TOKEN_2,BLYNK_TOKEN_3,BLYNK_TOKEN_4,BLYNK_TOKEN_5};
 
 	    blynk_init(client);
 
 	    	blynk_options_t opt = {
-	    		.token = BLYNK_TOKEN,
 	    		.server = BLYNK_SERVER,
 	    		/* Use default timeouts */
 	    	};
+
+	    	if (addr>=5)
+	    		ESP_LOGE(TAG,"error addr %d",addr);
+	    	else
+	    		snprintf(opt.token,sizeof(opt.token),"%s",tokens[addr]);
+
 
 	    	blynk_set_options(client, &opt);
 
