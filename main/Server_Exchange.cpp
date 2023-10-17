@@ -62,7 +62,7 @@ void Socket_Recv(void *pvParameter)
        socklen_t socklen = sizeof(source_addr);
 
 	        while (1) {
-	            ESP_LOGI(TAG, "Waiting for data");
+
 	            int len = recvfrom(sock, rx_buffer, sizeof(rx_buffer) - 1, 0, (struct sockaddr *)&source_addr, &socklen);
 
 	            // Error occurred during receiving
