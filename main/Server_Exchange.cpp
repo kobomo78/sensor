@@ -79,8 +79,6 @@ void Socket_Recv(void *pvParameter)
 	                if (((SSensorData*)rx_buffer)->type==TYPE_GET_DATA)
 	                {
 
-	                	ESP_LOGI(TAG, "receive query\n");
-
 	                	SSensorData data;
 	                	data.type=TYPE_DATA;
 	                	data.sensor_addr=addr;
@@ -93,12 +91,6 @@ void Socket_Recv(void *pvParameter)
 		                    break;
 
 		                			}
-
-	                /*
-	                rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string...
-	                ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
-	                ESP_LOGI(TAG, "%s", rx_buffer);
-	                */
 
 	                }
 
@@ -117,48 +109,3 @@ void Socket_Recv(void *pvParameter)
 
 }
 
-/*
-void Server_Exchange(void *pvParameter)
-{
-
-	    int addr_family = 0;
-	    int ip_protocol = 0;
-	    float payload[2];
-
-		struct sockaddr_in dest_addr;
-		dest_addr.sin_addr.s_addr = inet_addr(HOST_IP_ADDR);
-		dest_addr.sin_family = AF_INET;
-		dest_addr.sin_port = htons(PORT);
-		addr_family = AF_INET;
-		ip_protocol = IPPROTO_IP;
-
-		ESP_LOGE(TAG, "socket");
-
-		int sock = socket(addr_family, SOCK_DGRAM, ip_protocol);
-
-		if (sock < 0) {
-			ESP_LOGE(TAG, "Unable to create socket: errno %d %s", errno,esp_err_to_name(errno));
-			vTaskDelete(NULL);
-		}
-
-
-    	while(1)
-    	{
-
-   			ESP_LOGI(TAG, "Socket created, sending to %s:%d", HOST_IP_ADDR, PORT);
-   			payload[0]=Temperature;
-   			payload[1]=Humidity;
-
-            int err = sendto(sock, &payload, sizeof(payload), 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
-	            if (err < 0) {
-	                ESP_LOGE(TAG, "Error occurred during sending: errno %d (%s)", errno,esp_err_to_name(errno));
-	            }
-
-
-	            vTaskDelay(2000 / portTICK_PERIOD_MS);
-	    }
-
-	    vTaskDelete(NULL);
-
-}
-*/

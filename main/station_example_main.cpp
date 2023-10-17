@@ -69,16 +69,12 @@ void DHT_reader_task(void *pvParameter)
 
 	while(1) {
 
-		printf("DHT Sensor Readings\n" );
 		int ret = readDHT();
 
 		errorHandler(ret);
 
 		Temperature=getTemperature();
 		Humidity=getHumidity();
-
-		printf("Humidity %.2f %%\n", Humidity);
-		printf("Temperature %.2f degC\n\n", Temperature);
 
 		vTaskDelay(15000 / portTICK_PERIOD_MS );
 	}
@@ -109,8 +105,6 @@ void Init(void)
 		   addr=3;
 	   if (gpio_get_level(GPIO_OUTPUT_IO_4)==0)
 		   addr=4;
-
-	   ESP_LOGI(TAG,"addr=%d",addr);
 
 }
 

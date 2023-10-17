@@ -27,15 +27,6 @@ void state_handler(blynk_client_t *c, const blynk_state_evt_t *ev, void *data) {
 void vw_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char **argv, void *data) {
 
 
-	printf("vw_handler\n");
-/*
-	if (argc > 1 && atoi(argv[0]) == VP_PWM) {
-		uint32_t value = atoi(argv[1]);
-
-
-
-	}
-*/
 }
 
 /* Blynk client state handler */
@@ -48,8 +39,6 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 
 	int pin = atoi(argv[0]);
 
-
-	//printf("vr_handler pin=%d\n",pin);
 
 	switch (pin) {
 		case VP_TEMPERATURE:
