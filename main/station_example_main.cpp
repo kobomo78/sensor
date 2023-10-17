@@ -106,6 +106,12 @@ void Init(void)
 	   if (gpio_get_level(GPIO_OUTPUT_IO_4)==0)
 		   addr=4;
 
+
+	   esp_log_level_set("ota", ESP_LOG_NONE);
+	   esp_log_level_set("esp_ota_ops", ESP_LOG_NONE);
+	   esp_log_level_set("HTTP_CLIENT", ESP_LOG_NONE);
+	   esp_log_level_set("esp_https_ota", ESP_LOG_NONE);
+
 }
 
 void app_main(void)
