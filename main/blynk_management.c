@@ -7,10 +7,13 @@
 static const char *TAG = "blynk_management";
 
 enum {
-	VP_COUNTER = 0,
-	VP_TEMPERATURE,
-	VP_HUMIDITY,
-	VP_VERSION,
+	VP_COUNTER 			= 0,
+	VP_TEMPERATURE		= 1,
+	VP_HUMIDITY			= 2,
+	VP_VERSION			= 3,
+	VP_RESTART_CMD		= 4,
+	VP_RESTART_REASON	= 5
+
 };
 
 extern uint32_t   counter;
@@ -18,6 +21,26 @@ extern float Temperature;
 extern float Humidity;
 extern char  Ver[16];
 extern uint8_t   addr;
+
+char *getesp_reset_reason_str(esp_reset_reason_t reason)
+{
+	static char reasonStr[12][64]={"Reason not in diapason",
+									"Reset reason can not be determined",
+									"Reset due to power-on event",
+									"Reset by external pin (not applicable for ESP32)",
+									"Software reset via esp_restart",
+									"Software reset due to exception/panic",
+									"Reset (software or hardware) due to interrupt watchdog",
+									"Reset due to task watchdog",
+									"Reset due to other watchdogs",
+									"Reset after exiting deep sleep mode",
+									"Brownout reset (software or hardware)",
+									"Reset over SDIO"};
+
+
+	return (reason>=12)? reasonStr[0]:reasonStr[reason+1];
+
+}
 
 /* Blynk client state handler */
 void state_handler(blynk_client_t *c, const blynk_state_evt_t *ev, void *data) {
@@ -27,6 +50,23 @@ void state_handler(blynk_client_t *c, const blynk_state_evt_t *ev, void *data) {
 /* Virtual write handler */
 void vw_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char **argv, void *data) {
 
+	if (argc<=1) {
+		return;
+	}
+
+	int pin = atoi(argv[0]);
+
+
+	switch (pin) {
+			case VP_RESTART_CMD:
+				{
+					if (atoi(argv[1])==1)
+						esp_restart();
+
+					break;
+
+				}
+	}
 
 }
 
@@ -70,6 +110,12 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sis", "vw", VP_VERSION, Ver);
 			break;
 		}
+		case VP_RESTART_REASON:
+		{
+			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sis", "vw", VP_RESTART_REASON, getesp_reset_reason_str(esp_reset_reason()));
+			break;
+		}
+
 
 
 	}
