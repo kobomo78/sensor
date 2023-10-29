@@ -13,7 +13,7 @@
 #define BLYNK_TOKEN_1 "4z1rZ4LauY2lGRIaaAdSaIWBKqXiKknH"
 #define BLYNK_TOKEN_2 "TaxTSm7kKkvdvMJxer846KiFRTMbFTHP"
 #define BLYNK_TOKEN_3 "nSSjtEfSrm6uqpBLmbX9dALYz2LrLxJ6"
-#define BLYNK_TOKEN_4 "444"
+#define BLYNK_TOKEN_4 "6yw2tOZkh1aHZxRKbIIuRHh0Zyjbr3S6"
 #define BLYNK_TOKEN_5 "555"
 
 #define BLYNK_SERVER "109.194.141.27"
