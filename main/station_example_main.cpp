@@ -43,6 +43,7 @@ extern "C" {void app_main(void);}
 static const char *TAG = "sensor";
 
 uint32_t   counter=0;
+char WorkTime[64];
 float Temperature=0;
 float Humidity=0;
 char  Ver[16];
@@ -55,9 +56,10 @@ void Work_counter(void *pvParameter)
 
 	while(1) {
 		counter++;
-		if (counter==10000)
-			counter=0;
 
+		time_t seconds(counter);
+		tm *p = gmtime(&seconds);
+		snprintf(WorkTime,sizeof(WorkTime),"%d days %d:%d:%d",p->tm_yday,p->tm_hour,p->tm_min,p->tm_sec);
 
 		vTaskDelay(1000 / portTICK_PERIOD_MS );
 	}
