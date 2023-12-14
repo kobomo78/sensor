@@ -30,6 +30,9 @@ int DHTgpio = 4;				// my default DHT pin = 4
 float humidity = 0.;
 float temperature = 0.;
 
+#define MAXdhtData 5	// to complete 40 = 5*8 Bits
+uint8_t dhtDataShow[MAXdhtData];
+
 // == set the DHT used pin=========================================
 
 void setDHTgpio( int gpio )
@@ -117,7 +120,7 @@ To request data from DHT:
 	1: 70 us
 ;----------------------------------------------------------------------------*/
 
-#define MAXdhtData 5	// to complete 40 = 5*8 Bits
+
 
 int readDHT()
 {
@@ -207,6 +210,12 @@ uint8_t bitInx = 7;
 
 
 	//printf("Data=%.2X %.2X %.2X %.2X %.2X\n",dhtData[0],dhtData[1],dhtData[2],dhtData[3],dhtData[4]);
+
+	dhtDataShow[0]=dhtData[0];
+	dhtDataShow[1]=dhtData[1];
+	dhtDataShow[2]=dhtData[2];
+	dhtDataShow[3]=dhtData[3];
+	dhtDataShow[4]=dhtData[4];
 
 	if (dhtData[4] == ((dhtData[0] + dhtData[1] + dhtData[2] + dhtData[3]) & 0xFF))
 		return DHT_OK;
