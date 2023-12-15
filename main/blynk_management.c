@@ -12,14 +12,8 @@ enum {
 	VP_HUMIDITY			= 2,
 	VP_VERSION			= 3,
 	VP_RESTART_CMD		= 4,
-	VP_RESTART_REASON	= 5,
+	VP_RESTART_REASON	= 5
 
-	VP_DHT_DATA_0		= 6,
-	VP_DHT_DATA_1		= 7,
-	VP_DHT_DATA_2		= 8,
-	VP_DHT_DATA_3		= 9,
-	VP_DHT_DATA_4		= 10,
-	VP_TEMPERATURE_2	= 11
 
 };
 
@@ -30,7 +24,6 @@ extern char  Ver[16];
 extern uint8_t   addr;
 extern uint8_t dhtDataShow[5];
 
-extern int16_t temperature_2;
 
 char *getesp_reset_reason_str(esp_reset_reason_t reason)
 {
@@ -94,20 +87,9 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 	switch (pin) {
 		case VP_TEMPERATURE:
 		{
-			/* Get ADC value */
-			float value = Temperature;
-
 			/* Respond with `virtual write' command */
-			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sif", "vw", VP_TEMPERATURE, value);
+			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sif", "vw", VP_TEMPERATURE, Temperature);
 			break;
-		}
-		case VP_TEMPERATURE_2:
-		{
-
-			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sii", "vw", VP_TEMPERATURE_2, temperature_2);
-
-			break;
-
 		}
 		case VP_HUMIDITY:
 		{
@@ -130,11 +112,6 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 		case VP_RESTART_REASON:
 		{
 			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sis", "vw", VP_RESTART_REASON, getesp_reset_reason_str(esp_reset_reason()));
-			break;
-		}
-		case VP_DHT_DATA_0:case VP_DHT_DATA_1:case VP_DHT_DATA_2:case VP_DHT_DATA_3:case VP_DHT_DATA_4:
-		{
-			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sii", "vw", pin, dhtDataShow[pin-VP_DHT_DATA_0]);
 			break;
 		}
 

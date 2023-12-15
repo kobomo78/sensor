@@ -196,16 +196,9 @@ uint8_t bitInx = 7;
 	humidity /= 10;						// get the decimal
 
 	// == get temp from Data[2] and Data[3]
-	temperature_2=(dhtData[3])+(dhtData[2]<<8);
+	int16_t temperature_temp=(dhtData[3])+(dhtData[2]<<8);
 
-	temperature = dhtData[2] & 0x7F;
-	temperature *= 0x100;				// >> 8
-	temperature += dhtData[3];
-	temperature /= 10;
-
-	if( dhtData[2] & 0x80 ) 			// negative temp, brrr it's freezing
-		temperature *= -1;
-
+	temperature = temperature_temp/10;
 
 	// == verify if checksum is ok ===========================================
 	// Checksum is the sum of Data 8 bits masked out 0xFF
