@@ -18,7 +18,8 @@ enum {
 	VP_DHT_DATA_1		= 7,
 	VP_DHT_DATA_2		= 8,
 	VP_DHT_DATA_3		= 9,
-	VP_DHT_DATA_4		= 10
+	VP_DHT_DATA_4		= 10,
+	VP_TEMPERATURE_2	= 11
 
 };
 
@@ -28,6 +29,8 @@ extern float Humidity;
 extern char  Ver[16];
 extern uint8_t   addr;
 extern uint8_t dhtDataShow[5];
+
+extern int16_t temperature_2;
 
 char *getesp_reset_reason_str(esp_reset_reason_t reason)
 {
@@ -98,7 +101,14 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sif", "vw", VP_TEMPERATURE, value);
 			break;
 		}
+		case VP_TEMPERATURE_2:
+		{
 
+			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sii", "vw", VP_TEMPERATURE_2, temperature_2);
+
+			break;
+
+		}
 		case VP_HUMIDITY:
 		{
 			float value = Humidity;

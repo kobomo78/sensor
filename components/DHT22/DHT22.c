@@ -29,6 +29,7 @@ static const char* TAG = "DHT";
 int DHTgpio = 4;				// my default DHT pin = 4
 float humidity = 0.;
 float temperature = 0.;
+int16_t temperature_2;
 
 #define MAXdhtData 5	// to complete 40 = 5*8 Bits
 uint8_t dhtDataShow[MAXdhtData];
@@ -195,6 +196,7 @@ uint8_t bitInx = 7;
 	humidity /= 10;						// get the decimal
 
 	// == get temp from Data[2] and Data[3]
+	temperature_2=(dhtData[3])+(dhtData[2]<<8);
 
 	temperature = dhtData[2] & 0x7F;
 	temperature *= 0x100;				// >> 8
