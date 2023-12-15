@@ -29,6 +29,9 @@ static const char* TAG = "DHT";
 int DHTgpio = 4;				// my default DHT pin = 4
 float humidity = 0.;
 float temperature = 0.;
+int16_t temperature_2;
+
+#define MAXdhtData 5	// to complete 40 = 5*8 Bits
 
 // == set the DHT used pin=========================================
 
@@ -117,7 +120,7 @@ To request data from DHT:
 	1: 70 us
 ;----------------------------------------------------------------------------*/
 
-#define MAXdhtData 5	// to complete 40 = 5*8 Bits
+
 
 int readDHT()
 {
@@ -192,15 +195,9 @@ uint8_t bitInx = 7;
 	humidity /= 10;						// get the decimal
 
 	// == get temp from Data[2] and Data[3]
+	int16_t temperature_temp=(dhtData[3])+(dhtData[2]<<8);
 
-	temperature = dhtData[2] & 0x7F;
-	temperature *= 0x100;				// >> 8
-	temperature += dhtData[3];
-	temperature /= 10;
-
-	if( dhtData[2] & 0x80 ) 			// negative temp, brrr it's freezing
-		temperature *= -1;
-
+	temperature = ((float)temperature_temp)/(float)10;
 
 	// == verify if checksum is ok ===========================================
 	// Checksum is the sum of Data 8 bits masked out 0xFF

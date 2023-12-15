@@ -22,6 +22,7 @@ extern float Humidity;
 extern char  Ver[16];
 extern uint8_t   addr;
 
+
 char *getesp_reset_reason_str(esp_reset_reason_t reason)
 {
 	static char reasonStr[12][64]={"Reason not in diapason",
@@ -84,14 +85,10 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 	switch (pin) {
 		case VP_TEMPERATURE:
 		{
-			/* Get ADC value */
-			float value = Temperature;
-
 			/* Respond with `virtual write' command */
-			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sif", "vw", VP_TEMPERATURE, value);
+			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sif", "vw", VP_TEMPERATURE, Temperature);
 			break;
 		}
-
 		case VP_HUMIDITY:
 		{
 			float value = Humidity;
@@ -115,7 +112,6 @@ void vr_handler(blynk_client_t *c, uint16_t id, const char *cmd, int argc, char 
 			blynk_send(c, BLYNK_CMD_HARDWARE, 0, "sis", "vw", VP_RESTART_REASON, getesp_reset_reason_str(esp_reset_reason()));
 			break;
 		}
-
 
 
 	}
